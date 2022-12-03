@@ -1,6 +1,5 @@
 package org.example;
 
-
 import org.redisson.Redisson;
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateIntervalUnit;
@@ -9,8 +8,6 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static java.lang.Thread.sleep;
 
 public class Application {
 
@@ -28,21 +25,23 @@ public class Application {
 
         new Thread(() -> {
             while (true) {
-
                 if (limiter.tryAcquire()) {
                     succeedCounter.incrementAndGet();
                 }
 
                 System.out.println(succeedCounter.get());
 
-                try {
-                    sleep(1000L);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleep();
             }
         }).start();
 
     }
 
+    static void sleep() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
