@@ -17,10 +17,10 @@ public class Application {
         config.useSingleServer().setAddress("redis://localhost:6379");
         RedissonClient redisson = Redisson.create(config);
 
-        RRateLimiter limiter = redisson.getRateLimiter("sms::rate::limiter::us_1123");
+        RRateLimiter limiter = redisson.getRateLimiter("sms::rate::limiter::us_112358");
 
-        // 1 permits per 15 seconds
-        limiter.trySetRate(RateType.OVERALL, 1, 15, RateIntervalUnit.SECONDS);
+        // 1 permits per 5 seconds
+        limiter.trySetRate(RateType.OVERALL, 1, 5, RateIntervalUnit.SECONDS);
         AtomicInteger succeedCounter = new AtomicInteger(0);
 
         new Thread(() -> {
