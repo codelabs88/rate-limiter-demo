@@ -1,6 +1,5 @@
 package org.example;
 
-import org.redisson.Redisson;
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
@@ -15,12 +14,12 @@ public class Application {
 
         Config config = new Config();
         config.useSingleServer().setAddress("redis://localhost:6379");
-        RedissonClient redisson = Redisson.create(config);
+        RedissonClient redisson = CustomRedisson.create(config);
 
         RRateLimiter limiter = redisson.getRateLimiter("sms::rate::limiter::us_112358");
 
         // 1 permits per 5 seconds
-        limiter.trySetRate(RateType.OVERALL, 1, 5, RateIntervalUnit.SECONDS);
+        limiter.setRate(RateType.OVERALL, 1, 5, RateIntervalUnit.SECONDS);
         AtomicInteger succeedCounter = new AtomicInteger(0);
 
         new Thread(() -> {
